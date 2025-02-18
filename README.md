@@ -86,33 +86,29 @@ Modify `config.yaml` inside `utils/config` to change training parameters.
  ├── logs/               # Training and inference logs
 ```
 
-## 📊 Monitoring & Evaluation
+## 📊 Evaluation
 After inference, WER results are stored in:
 ```
 output/results_<lang>/sentence_wise_wer.csv
 ```
-To analyze errors:
-```bash
-cat output/results_ur/sentence_wise_wer.csv | less
-```
 
-## 📥 Download Pretrained Models
+
+## 📥 Download Models
 Download the models from Google Drive:
 
 🔗 [Model Checkpoints (Google Drive)](https://drive.google.com/file/d/1448YTjUV_adVcM8O0cFCb3pypj_SpXpA/view?usp=drive_link)
 
-## 👥 Contributors
+## 👥 Authors
 
-1) Srihari Bandarupalli - IIITH
+The development of PARSpeech was led by:
 
-2) Bhavana Akkiraju - IIITH
+1) Srihari Bandarupalli - IIITH -  📧 Email: srihari.bandarupalli@research.iiit.ac.in 
 
-## 📩 Contact
+2) Bhavana Akkiraju - IIITH - 📧 Email: bhavana.akkiraju@research.iiit.ac.in
 
-For any queries, please reach out:
 
-Srihari Bandarupalli - 📧 Email: srihari.bandarupalli@research.iiit.ac.in 
+## ⚖️ License
 
-Bhavana Akkiraju - 📧 Email: bhavana.akkiraju@research.iiit.ac.in
+PARSpeech is licensed under the MIT License - see the LICENSE file for details. The pretrained and fine-tuned models in this repository are licensed under the same terms as the code.
 
 
