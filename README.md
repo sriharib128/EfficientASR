@@ -97,8 +97,22 @@ cat output/results_ur/sentence_wise_wer.csv | less
 ```
 
 ## 📥 Download Pretrained Models
-Download the pretrained models from Google Drive:
+Download the models from Google Drive:
 
 🔗 [Model Checkpoints (Google Drive)](https://drive.google.com/file/d/1448YTjUV_adVcM8O0cFCb3pypj_SpXpA/view?usp=drive_link)
+
+## 👥 Contributors
+
+1) Srihari Bandarupalli - IIITH
+
+2) Bhavana Akkiraju - IIITH
+
+## 📩 Contact
+
+For any queries, please reach out:
+
+Srihari Bandarupalli - 📧 Email: srihari.bandarupalli@research.iiit.ac.in 
+
+Bhavana Akkiraju - 📧 Email: bhavana.akkiraju@research.iiit.ac.in
 
 
