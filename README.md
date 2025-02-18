@@ -1,20 +1,7 @@
 # PARSpeech - ASR Training and Inference Pipeline
 
 ## 📌 Overview
-RSPeech, an open-source
-model that leverages unlabeled data to enhance ASR perfor-
-mance for Persian, Arabic, and Urdu. We develop a scalable
-pipeline to collect, process, and filter unlabelled speech, result-
-ing in a 3,000-hour multilingual corpus. Using this dataset, we
-pre-train a multilingual acoustic model following a continuous
-pretraining approach to leverage its existing knowledge. Given
-the complex orthography of Perso-Arabic languages, we further
-propose the use of sentencepiece based tokenization for vocab-
-ulary construction. Fine-tuning this pre-trained model even on
-limited labelled data yields performance comparable to state-
-of-the-art (SOTA) large models(>1B) while using only a small
-model(300M). This highlights the efficiency of our approach
-in achieving SOTA with significantly lower computational requirements
+PARSPeech, an open-source model that leverages unlabeled data to enhance ASR performance for Persian, Arabic, and Urdu. We develop a scalable pipeline to collect, process, and filter unlabelled speech, resulting in a 3,000-hour multilingual corpus. Using this dataset, we pre-train a multilingual acoustic model following a continuous pretraining approach to leverage its existing knowledge. Given the complex orthography of Perso-Arabic languages, we further propose the use of sentencepiece based tokenization for vocabulary construction. Fine-tuning this pre-trained model even on limited labelled data yields performance comparable to state-of-the-art (SOTA) large models(>1B) while using only a small model(300M). This highlights the efficiency of our approach in achieving SOTA with significantly lower computational requirements
 
 ## 🏗 Folder Structure
 ```
