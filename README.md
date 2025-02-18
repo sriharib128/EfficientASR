@@ -70,7 +70,6 @@ Modify `config.yaml` inside `utils/config` to change training parameters.
 
 ## 📝 Script Descriptions
 ### **run.sh** (Main script)
-- Handles error management
 - Calls appropriate stage functions
 - Manages dataset and model paths
 
@@ -114,13 +113,5 @@ cat output/results_ur/sentence_wise_wer.csv | less
 Download the pretrained models from Google Drive:
 
 🔗 [Model Checkpoints (Google Drive)](https://drive.google.com/file/d/1448YTjUV_adVcM8O0cFCb3pypj_SpXpA/view?usp=drive_link)
-
-## 🔄 Troubleshooting
-- **Missing Dependencies?** Ensure all required libraries are installed.
-- **GPU Issues?** Check CUDA installation and `CUDA_VISIBLE_DEVICES`.
-- **File Not Found?** Verify correct data paths in `run.sh`.
-
-## 📬 Contact
-For issues and contributions, reach out via GitHub or email.
 
 

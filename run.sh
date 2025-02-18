@@ -44,7 +44,7 @@ model_name="cp1"
 gpus=2
 INPUT_FOLDER="$DATA_DIR/input"
 OUTPUT_FOLDER="$DATA_DIR/output"
-AUDIO_FOLDER="/data/bhavana/labelled_data/Urdu/wav2vec"
+AUDIO_FOLDER="$INPUT_FOLDER/audio"
 
 DATA_PATH="$OUTPUT_FOLDER/${lang}_data"
 SPM_MODEL="$INPUT_FOLDER/spm_models"
@@ -54,7 +54,7 @@ SPM_PATH="$INPUT_FOLDER/spm_models/$spm_$lang"
 # Training Data Paths
 TRAIN_WAV_PATH="$AUDIO_FOLDER/train"
 
-TRAIN_DEST_PATH="/data/bhavana/PARSpeech/output/finetuning_$lang"
+TRAIN_DEST_PATH="$OUTPPUT_FOLDER/finetuning_$lang"
 
 # Fine-tuning Paths
 FINETUNING_DICT="$TRAIN_DEST_PATH/dict.ltr.txt"
@@ -130,7 +130,7 @@ start_finetuning() {
     local config_name="PARSpeech_config.yaml"
     local gpus=2
     local wandb_name="finetuning_${lang}_${model_name}_test"
-    local config_path="/data/bhavana/PARSpeech/utils/config"
+    local config_path="${DATA_DIR}/utils/config"
     local checkpoints_path="$OUTPUT_FOLDER/checkpoints_${wandb_name}"
     local log_path="$OUTPUT_FOLDER/logs/${wandb_name}"
     local tensorboard_path="$OUTPUT_FOLDER/tensorboard"
