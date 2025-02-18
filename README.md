@@ -1,124 +1,126 @@
-# PARSpeech
+# PARSpeech - ASR Training and Inference Pipeline
 
-## Installation Instructions  
-### Prerequisites  
-- Install [Miniconda](https://docs.anaconda.com/miniconda/install/)  
-- **Important:** Always deactivate `conda base` before installing or activating any new environment to avoid inheriting environment variables.  
+## 📌 Overview
+RSPeech, an open-source
+model that leverages unlabeled data to enhance ASR perfor-
+mance for Persian, Arabic, and Urdu. We develop a scalable
+pipeline to collect, process, and filter unlabelled speech, result-
+ing in a 3,000-hour multilingual corpus. Using this dataset, we
+pre-train a multilingual acoustic model following a continuous
+pretraining approach to leverage its existing knowledge. Given
+the complex orthography of Perso-Arabic languages, we further
+propose the use of sentencepiece based tokenization for vocab-
+ulary construction. Fine-tuning this pre-trained model even on
+limited labelled data yields performance comparable to state-
+of-the-art (SOTA) large models(>1B) while using only a small
+model(300M). This highlights the efficiency of our approach
+in achieving SOTA with significantly lower computational requirements
 
-**Fairseq Commit:** `ecbf110e1eb43861214b05fa001eff584954f65a`  
+## 🏗 Folder Structure
+```
+📂 PARSpeech
+ ├── run.sh                 # Main script to run the pipeline
+ ├── utils
+ │   ├── config
+ │   │   └── config.yaml      # Configuration file for training
+ │   ├── data_generation
+ │   │   ├── data_prep.sh        # Script for data preparation
+ │   │   ├── generate_audio_report.py
+ │   │   ├── generate_dict_analysis.py
+ │   │   ├── manifest.py
+ │   │   ├── sp_dict_gen.py
+ │   │   ├── sp_labels.py
+ │   ├── inference
+ │   │   ├── components.py
+ │   │   ├── infer.py
+ │   │   ├── save_predicted_output.py
+ │   │   ├── wer_wav2vec.py
+ ├── start_finetuning.sh    # Script to start fine-tuning
+ ├── infer.sh               # Script to run inference
+```
 
----
+## 🚀 How to Use
 
-### Step 1: Create and Activate Conda Environment  
-
+### 1️⃣ Run the Script
+The entire pipeline is executed using `run.sh`. You need to specify the **stage number** and **language code**:
 ```bash
-conda create --prefix ./env_fair -c anaconda python=3.8 nvidia/label/cuda-12.1.1::cuda-toolkit cudnn=9.1
-conda activate ./env_fair
-pip install --upgrade pip==24.0  # Important for omegaconf==2.0.6
+bash run.sh <stage> <language_code>
 ```
-
----
-
-### Step 2: Setup CUDA in Conda Environment  
-
-Create an activation and deactivation script to set CUDA and environment variables:  
-
+Example:
 ```bash
-#!/bin/bash
-
-# Create directories for activation and deactivation scripts
-mkdir -p $CONDA_PREFIX/etc/conda/activate.d
-mkdir -p $CONDA_PREFIX/etc/conda/deactivate.d
-
-# Activation script content
-activate_script_content='#!/bin/sh
-export CUDA_HOME=$CONDA_PREFIX
-export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
-export WANDB_API_KEY=$YOUR_API_KEY'
-
-# Deactivation script content
-deactivate_script_content='#!/bin/sh
-export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed -e "s|$CONDA_PREFIX/lib:||g")
-unset CUDA_HOME
-unset WANDB_API_KEY'
-
-# Save and make the scripts executable
-echo "$activate_script_content" > $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-echo "$deactivate_script_content" > $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
-chmod +x $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-chmod +x $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
-
-echo "CUDA environment setup completed!"
+bash run.sh 1 ur  # Prepare training data for Urdu
+bash run.sh 2 ar  # Fine-tune model for Arabic
+bash run.sh 3 fa  # Prepare test data for Farsi
+bash run.sh 4 ur  # Run inference for Urdu
 ```
 
----
+### 2️⃣ Stages in the Pipeline
+| Stage | Description |
+|-------|------------|
+| 1 | **Prepare Training Data**: Generates manifests, labels, and dictionaries for training |
+| 2 | **Fine-tune the Model**: Starts fine-tuning using wav2vec pretrained models |
+| 3 | **Prepare Testing Data**: Creates manifests and dictionaries for test data |
+| 4 | **Run Inference**: Performs ASR inference and calculates WER (Word Error Rate) |
 
-### Step 3: Install Fairseq  
+## 🛠 Dependencies
+Refer to the [Installation Guide](Installation.md)
 
+## 🔧 Configuration
+Modify `config.yaml` inside `utils/config` to change training parameters.
+
+## 📝 Script Descriptions
+### **run.sh** (Main script)
+- Handles error management
+- Calls appropriate stage functions
+- Manages dataset and model paths
+
+### **data_prep.sh** (Data preparation script)
+- Generates dataset manifests and labels
+- Splits validation data
+- Creates dictionaries
+
+### **start_finetuning.sh** (Fine-tuning script)
+- Loads pretrained wav2vec model
+- Logs training process
+- Saves fine-tuned checkpoints
+
+### **infer.sh** (Inference script)
+- Loads fine-tuned model
+- Runs inference on test dataset
+- Computes WER (Word Error Rate)
+
+## 📂 Output Structure
+```
+📂 output
+ ├── checkpoints/        # Model checkpoints
+ ├── results_ar/         # Arabic ASR results
+ ├── results_ur/         # Urdu ASR results
+ ├── results_fa/         # Farsi ASR results
+ ├── tensorboard/        # Logs for visualization
+ ├── logs/               # Training and inference logs
+```
+
+## 📊 Monitoring & Evaluation
+After inference, WER results are stored in:
+```
+output/results_<lang>/sentence_wise_wer.csv
+```
+To analyze errors:
 ```bash
-git clone https://github.com/facebookresearch/fairseq
-cd fairseq
-pip install --editable ./
-pip install protobuf==3.20
+cat output/results_ur/sentence_wise_wer.csv | less
 ```
 
-#### Modifications  
-1. **`fairseq/fairseq/criterions/wav2vec_criterion.py`**: At **line 231**, change the return to `False`.  
-    ```python
-    return False  # Modify line 231
-    ```
-2. **`fairseq/fairseq/distributed/utils.py`**: In `_infer_slurm_init` at **line 97**, add `return False` if running on a specific node.  
-    ```python
-    return False  # Modify line 97
-    ```
+## 📥 Download Pretrained Models
+Download the pretrained models from Google Drive:
 
----
+🔗 [Model Checkpoints (Google Drive)](https://drive.google.com/file/d/1448YTjUV_adVcM8O0cFCb3pypj_SpXpA/view?usp=drive_link)
 
-### Step 4: Install Dependencies  
+## 🔄 Troubleshooting
+- **Missing Dependencies?** Ensure all required libraries are installed.
+- **GPU Issues?** Check CUDA installation and `CUDA_VISIBLE_DEVICES`.
+- **File Not Found?** Verify correct data paths in `run.sh`.
 
-```bash
-pip install -r requirements.txt
-```
+## 📬 Contact
+For issues and contributions, reach out via GitHub or email.
 
-**requirements.txt**:  
 
-```
-packaging
-soundfile
-swifter
-joblib==1.4.2
-indic-nlp-library
-tqdm==4.67.1
-numpy==1.24.4
-pandas==1.2.2
-progressbar2==3.53.1
-python_Levenshtein==0.12.2
-editdistance==0.3.1
-omegaconf==2.0.6  # Do not change this version
-tensorboard
-tensorboardX
-wandb
-jiwer
-jupyterlab
-```
-
----
-
-### Step 5: Install Flashlight for KenLM Decoding  
-
-#### Flashlight Text  
-```bash
-pip install flashlight-text
-pip install git+https://github.com/kpu/kenlm.git
-```
-
-#### Flashlight Sequence  
-For CUDA support, set `USE_CUDA=1` when installing. Disable OpenMP by setting `USE_OPENMP=0`.  
-
-```bash
-git clone https://github.com/flashlight/sequence
-cd sequence
-pip install .
-```
-
----
