@@ -124,4 +124,15 @@ pip install .
 
 ---
 
+### 🔹 Important Note for Inference  
+
+1️⃣ While running inference, ensure that `infer.py` can access Fairseq by adding the following line at the beginning of `infer.py`:  
+
+```python
+import sys
+sys.path.append("path/to/your/fairseq")  # Replace with the actual path to your Fairseq directory
+```
+
+This is required to correctly import Fairseq modules while performing inference.
+
 ✅ **Installation Complete!** 🚀
