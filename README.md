@@ -1,7 +1,8 @@
-# PARSpeech - ASR Training and Inference Pipeline
+# PARSpeech 
 
 ## 📌 Overview
-PARSPeech, an open-source model that leverages unlabeled data to enhance ASR performance for Persian, Arabic, and Urdu. We develop a scalable pipeline to collect, process, and filter unlabelled speech, resulting in a 3,000-hour multilingual corpus. Using this dataset, we pre-train a multilingual acoustic model following a continuous pretraining approach to leverage its existing knowledge. Given the complex orthography of Perso-Arabic languages, we further propose the use of sentencepiece based tokenization for vocabulary construction. Fine-tuning this pre-trained model even on limited labelled data yields performance comparable to state-of-the-art (SOTA) large models(>1B) while using only a small model(300M). This highlights the efficiency of our approach in achieving SOTA with significantly lower computational requirements
+
+Automatic Speech Recognition (ASR) for Perso-Arabic languages is challenging due to limited labeled data and complex orthography. While existing state-of-the-art(SOTA) models achieve impressive results, they are computationally intensive and require extensive labeled datasets, limiting their applicability to low-resource languages. To address these challenges, we present PARSpeech, an efficient approach that uses a scalable pipeline to collect unlabeled data, creating a 3,000-hour multilingual corpus. Our methodology combines continuous pretraining with SentencePiece-based tokenization tailored for Perso-Arabic scripts. Despite using only 300M parameters—a mere 20\% of the size of current SOTA models (1.5B+ parameters)—PARSpeech achieves competitive performance while requiring significantly less labeled data for fine-tuning. These results demonstrate the effectiveness of targeted pretraining for developing efficient, high-performance ASR for low-resource languages.
 
 ## 🏗 Folder Structure
 ```
@@ -97,6 +98,11 @@ output/results_<lang>/sentence_wise_wer.csv
 Download the models from Google Drive:
 
 🔗 [Model Checkpoints (Google Drive)](https://drive.google.com/file/d/1448YTjUV_adVcM8O0cFCb3pypj_SpXpA/view?usp=drive_link)
+
+## ✨ Upcoming Add-ons
+
+1) Pretraining Config
+2) Unlabelled Pipeline
 
 ## 👥 Authors
 
