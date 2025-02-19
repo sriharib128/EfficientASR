@@ -58,22 +58,6 @@ cd fairseq
 pip install --editable ./
 pip install protobuf==3.20
 ```
-
-### 🔧 Modifications in Fairseq
-Modify the following lines in Fairseq files:
-
-**1. `fairseq/fairseq/criterions/wav2vec_criterion.py`**  
-📌 **At line 231**, modify:
-```python
-return False  # Modify line 231
-```
-
-**2. `fairseq/fairseq/distributed/utils.py`**  
-📌 **At line 97** (inside `_infer_slurm_init`), add:
-```python
-return False  # Modify line 97
-```
-
 ---
 
 ## 📦 Step 4: Install Dependencies
