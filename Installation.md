@@ -13,54 +13,19 @@ Before installing or activating any new environment, **always deactivate the bas
 ```bash
 conda create --prefix ./env_fair -c anaconda python=3.8 nvidia/label/cuda-12.1.1::cuda-toolkit cudnn=9.1
 conda activate ./env_fair
-pip install --upgrade pip==24.0  # Important for omegaconf==2.0.6
 ```
 
 ---
 
-## 🔧 Step 2: Setup CUDA in Conda Environment
-Create activation and deactivation scripts to set CUDA and environment variables:
-
-```bash
-#!/bin/bash
-
-# Create directories for activation and deactivation scripts
-mkdir -p $CONDA_PREFIX/etc/conda/activate.d
-mkdir -p $CONDA_PREFIX/etc/conda/deactivate.d
-
-# Activation script content
-activate_script_content='#!/bin/sh
-export CUDA_HOME=$CONDA_PREFIX
-export LD_LIBRARY_PATH=$CONDA_PREFIX/lib:$LD_LIBRARY_PATH
-export WANDB_API_KEY=$YOUR_API_KEY'
-
-# Deactivation script content
-deactivate_script_content='#!/bin/sh
-export LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed -e "s|$CONDA_PREFIX/lib:||g")
-unset CUDA_HOME
-unset WANDB_API_KEY'
-
-# Save and make the scripts executable
-echo "$activate_script_content" > $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-echo "$deactivate_script_content" > $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
-chmod +x $CONDA_PREFIX/etc/conda/activate.d/env_vars.sh
-chmod +x $CONDA_PREFIX/etc/conda/deactivate.d/env_vars.sh
-
-echo "CUDA environment setup completed!"
-```
-
----
-
-## ⚙️ Step 3: Install Fairseq
+## ⚙️ Step 2: Install Fairseq
 ```bash
 git clone https://github.com/facebookresearch/fairseq
 cd fairseq
 pip install --editable ./
-pip install protobuf==3.20
 ```
 ---
 
-## 📦 Step 4: Install Dependencies
+## 📦 Step 3: Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -89,7 +54,7 @@ jupyterlab
 
 ---
 
-## 🔥 Step 5: Install Flashlight for KenLM Decoding
+## 🔥 Step 4: Install Flashlight for KenLM Decoding
 
 ### **Flashlight Text**
 ```bash
